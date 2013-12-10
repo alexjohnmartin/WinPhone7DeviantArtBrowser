@@ -1,0 +1,25 @@
+﻿<local:MainViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:WinPhonePanoramaApp">
+    <!--SampleProperty="Sample Text Property Value"-->
+    
+    <local:MainViewModel.MostPopularItems>
+        <local:ItemViewModel Title="design one" Author="Maecenas praesent accumsan bibendum" ImageUrl="Maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur"/>
+        <local:ItemViewModel Title="design two" Author="Dictumst eleifend facilisi faucibus" ImageUrl="Pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent"/>
+        <local:ItemViewModel Title="design three" Author="Habitant inceptos interdum lobortis" ImageUrl="Accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat"/>
+        <local:ItemViewModel Title="design four" Author="Nascetur pharetra placerat pulvinar" ImageUrl="Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum"/>
+        <local:ItemViewModel Title="design five" Author="Sagittis senectus sociosqu suscipit" ImageUrl="Dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis"/>
+        <local:ItemViewModel Title="design six" Author="Torquent ultrices vehicula volutpat" ImageUrl="Senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend"/>
+    </local:MainViewModel.MostPopularItems>
+
+    <local:MainViewModel.LatestItems>
+        <local:ItemViewModel Title="design one" Author="Maecenas praesent accumsan bibendum" ImageUrl="Maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur"/>
+        <local:ItemViewModel Title="design two" Author="Dictumst eleifend facilisi faucibus" ImageUrl="Pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent"/>
+        <local:ItemViewModel Title="design three" Author="Habitant inceptos interdum lobortis" ImageUrl="Accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat"/>
+        <local:ItemViewModel Title="design four" Author="Nascetur pharetra placerat pulvinar" ImageUrl="Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum"/>
+        <local:ItemViewModel Title="design five" Author="Sagittis senectus sociosqu suscipit" ImageUrl="Dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis"/>
+        <local:ItemViewModel Title="design six" Author="Torquent ultrices vehicula volutpat" ImageUrl="Senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend"/>
+    </local:MainViewModel.LatestItems>
+
+</local:MainViewModel>
