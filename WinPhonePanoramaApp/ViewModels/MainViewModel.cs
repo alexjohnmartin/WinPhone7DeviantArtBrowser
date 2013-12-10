@@ -1,18 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-
+using System.IO;
+using System.Net;
+using System.Windows;
 
 namespace WinPhonePanoramaApp
 {
@@ -55,25 +46,10 @@ namespace WinPhonePanoramaApp
         /// </summary>
         public void LoadData()
         {
-            // Sample data; replace with real data
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime one", Author = "Maecenas praesent accumsan bibendum", ImageUrl = "Facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis senectus sociosqu" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime two", Author = "Dictumst eleifend facilisi faucibus", ImageUrl = "Suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime three", Author = "Habitant inceptos interdum lobortis", ImageUrl = "Habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime four", Author = "Nascetur pharetra placerat pulvinar", ImageUrl = "Ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime five", Author = "Maecenas praesent accumsan bibendum", ImageUrl = "Maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime six", Author = "Dictumst eleifend facilisi faucibus", ImageUrl = "Pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime seven", Author = "Habitant inceptos interdum lobortis", ImageUrl = "Accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime eight", Author = "Nascetur pharetra placerat pulvinar", ImageUrl = "Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime nine", Author = "Maecenas praesent accumsan bibendum", ImageUrl = "Facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis senectus sociosqu" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime ten", Author = "Dictumst eleifend facilisi faucibus", ImageUrl = "Suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime eleven", Author = "Habitant inceptos interdum lobortis", ImageUrl = "Habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime twelve", Author = "Nascetur pharetra placerat pulvinar", ImageUrl = "Ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime thirteen", Author = "Maecenas praesent accumsan bibendum", ImageUrl = "Maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime fourteen", Author = "Dictumst eleifend facilisi faucibus", ImageUrl = "Pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime fifteen", Author = "Habitant inceptos interdum lobortis", ImageUrl = "Accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat" });
-            //MostPopularItems.Add(new ItemViewModel() { Title = "runtime sixteen", Author = "Nascetur pharetra placerat pulvinar", ImageUrl = "Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum" });
+            //daily deviations - http://backend.deviantart.com/rss.xml?q=special%3Add
 
-
+            GetMostPopular("http://backend.deviantart.com/rss.xml?type=deviation&q=boost%3Apopular");
+            GetLatest("http://backend.deviantart.com/rss.xml?type=deviation&q=sort%3Atime"); 
 
             IsDataLoaded = true;
         }
@@ -86,6 +62,71 @@ namespace WinPhonePanoramaApp
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void GetMostPopular(string url)
+        {
+            var targetUri = new System.Uri(url);
+            var request = (HttpWebRequest)HttpWebRequest.Create(targetUri);
+            request.BeginGetResponse(MostPopularCallback, request);
+        }
+
+        private void GetLatest(string url)
+        {
+            var targetUri = new System.Uri(url);
+            var request = (HttpWebRequest)HttpWebRequest.Create(targetUri);
+            request.BeginGetResponse(LatestCallback, request);
+        }
+
+        private void MostPopularCallback(IAsyncResult callbackResult)
+        {
+            var myRequest = (HttpWebRequest)callbackResult.AsyncState;
+            var myResponse = (HttpWebResponse)myRequest.EndGetResponse(callbackResult);
+
+            using (var httpwebStreamReader = new StreamReader(myResponse.GetResponseStream()))
+            {
+                string results = httpwebStreamReader.ReadToEnd();
+                Deployment.Current.Dispatcher.BeginInvoke(() => ParseRssDataIntoCollection(results, MostPopularItems));
+            }
+            myResponse.Close();
+        }
+
+        private void LatestCallback(IAsyncResult callbackResult)
+        {
+            var myRequest = (HttpWebRequest)callbackResult.AsyncState;
+            var myResponse = (HttpWebResponse)myRequest.EndGetResponse(callbackResult);
+
+            using (var httpwebStreamReader = new StreamReader(myResponse.GetResponseStream()))
+            {
+                string results = httpwebStreamReader.ReadToEnd();
+                Deployment.Current.Dispatcher.BeginInvoke(() => ParseRssDataIntoCollection(results, LatestItems));
+            }
+            myResponse.Close();
+        }
+
+        private void ParseRssDataIntoCollection(string results, ObservableCollection<ItemViewModel> items)
+        {
+            int resultCount = 0; 
+            while (results.Contains("<item>") && resultCount < 100)
+            {
+                results = results.Substring(results.IndexOf("<item>") + 6); 
+                //<title>Dubstep Girl</title>
+                var startIndex = results.IndexOf("<title>") + 7; 
+                var title = results.Substring(startIndex, results.IndexOf("</title>") - startIndex);
+                //<media:credit role="author" scheme="urn:ebu">MrPyrOs</media:credit>
+                startIndex = results.IndexOf("<media:credit role=\"author\" scheme=\"urn:ebu\">") + 45;
+                var author = results.Substring(startIndex, results.IndexOf("</media:credit>") - startIndex); 
+                //<media:thumbnail url="http://th06.deviantart.net/fs71/150/f/2013/344/e/b/dubstep_girl_by_mrpyros-d6xfbik.png" height="60" width="150"/>
+                var thumbnailBlock = results.Substring(results.IndexOf("<media:thumbnail url=\"") + 22);
+                thumbnailBlock = thumbnailBlock.Substring(0, thumbnailBlock.IndexOf("\"")); 
+
+                items.Add(new ItemViewModel{Title = title, Author = author, ImageUrl = thumbnailBlock});
+
+                results = results.Substring(results.IndexOf("</item>") + 7);
+                resultCount++; 
+            }
+
+            //mostPopularItems.Add(new ItemViewModel() { Title = "runtime sixteen", Author = "Nascetur pharetra placerat pulvinar", ImageUrl = "Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum" });
         }
     }
 }
