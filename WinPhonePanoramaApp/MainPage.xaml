@@ -30,7 +30,8 @@
                 <ListBox Margin="0,0,-12,0" ItemsSource="{Binding MostPopularItems}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,17">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,17" Tap="StackPanel_Tap">
+
                                 <!--Replace rectangle with image
                                 <Rectangle Height="200" Width="200" Fill="#FFE5001b" Margin="12,0,9,0"/>-->
                                 <Image Height="200" Width="200" Margin="12,0,9,0" Source="{Binding ImageUrl}" />

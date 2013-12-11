@@ -33,5 +33,10 @@ namespace WinPhonePanoramaApp
                 App.ViewModel.LoadData();
             }
         }
+
+        private void StackPanel_Tap(object sender, GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Details.xaml", UriKind.Relative)); 
+        }
     }
 }
