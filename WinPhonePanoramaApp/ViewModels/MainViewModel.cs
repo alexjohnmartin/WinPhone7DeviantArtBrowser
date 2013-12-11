@@ -18,23 +18,6 @@ namespace WinPhonePanoramaApp
         public ObservableCollection<ItemViewModel> MostPopularItems { get; private set; }
         public ObservableCollection<ItemViewModel> LatestItems { get; private set; }
 
-        //private string _sampleProperty = "Sample Runtime Property Value";
-        //public string SampleProperty
-        //{
-        //    get
-        //    {
-        //        return _sampleProperty;
-        //    }
-        //    set
-        //    {
-        //        if (value != _sampleProperty)
-        //        {
-        //            _sampleProperty = value;
-        //            NotifyPropertyChanged("SampleProperty");
-        //        }
-        //    }
-        //}
-
         public bool IsDataLoaded
         {
             get;

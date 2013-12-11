@@ -28,7 +28,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Image x:Name="ImageView" Margin="12,0,9,0" />
+            <Image x:Name="ImageView" Margin="12,0,9,0" Source="{Binding ImageUrl}" />
         </Grid>
     </Grid>
  
