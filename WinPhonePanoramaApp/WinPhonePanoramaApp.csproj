@@ -96,6 +96,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="PanoramaBackground.png" />
+    <Resource Include="da173x173.png" />
+    <Resource Include="da200x200.png" />
+    <Resource Include="da300x300.png" />
+    <Resource Include="da62x62.png" />
+    <Resource Include="GreenShadesBackground.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup />
