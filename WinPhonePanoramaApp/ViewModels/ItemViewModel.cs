@@ -40,10 +40,6 @@ namespace WinPhonePanoramaApp
         }
 
         private string _imageUrl;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string ImageUrl
         {
             get
@@ -56,6 +52,23 @@ namespace WinPhonePanoramaApp
                 {
                     _imageUrl = value;
                     NotifyPropertyChanged("ImageUrl");
+                }
+            }
+        }
+
+        private string _fullDetails;
+        public string FullDetails
+        {
+            get
+            {
+                return _fullDetails;
+            }
+            set
+            {
+                if (value != _fullDetails)
+                {
+                    _fullDetails = value;
+                    NotifyPropertyChanged("FullDetails");
                 }
             }
         }

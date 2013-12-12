@@ -30,10 +30,12 @@ namespace WinPhonePanoramaApp
         private void StackPanel_Tap(object sender, GestureEventArgs e)
         {
             var stackPanel = (StackPanel) sender;
-            string testTitle = stackPanel.Tag.ToString();
+            var itemText = stackPanel.Tag.ToString();
+            string testTitle = itemText.Substring(itemText.IndexOf("|") + 1); 
+            string imageUrl = itemText.Substring(0, itemText.IndexOf("|")); 
 
             //string testTitle = "test image title";
-            NavigationService.Navigate(new Uri("/Details.xaml?title=" + testTitle, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Details.xaml?title=" + testTitle + "&imageUrl=" + imageUrl, UriKind.Relative));
         }
     }
 }
