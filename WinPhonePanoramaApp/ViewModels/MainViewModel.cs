@@ -11,10 +11,12 @@ namespace WinPhonePanoramaApp
     {
         public MainViewModel()
         {
+            DailyDeviationItems = new ObservableCollection<ItemViewModel>();
             MostPopularItems = new ObservableCollection<ItemViewModel>();
             LatestItems = new ObservableCollection<ItemViewModel>();
         }
 
+        public ObservableCollection<ItemViewModel> DailyDeviationItems { get; private set; }
         public ObservableCollection<ItemViewModel> MostPopularItems { get; private set; }
         public ObservableCollection<ItemViewModel> LatestItems { get; private set; }
 
@@ -29,8 +31,7 @@ namespace WinPhonePanoramaApp
         /// </summary>
         public void LoadData()
         {
-            //daily deviations - http://backend.deviantart.com/rss.xml?q=special%3Add
-
+            GetDailyDeviations("http://backend.deviantart.com/rss.xml?q=special%3Add");
             GetMostPopular("http://backend.deviantart.com/rss.xml?type=deviation&q=boost%3Apopular");
             GetLatest("http://backend.deviantart.com/rss.xml?type=deviation&q=sort%3Atime"); 
 
@@ -47,6 +48,13 @@ namespace WinPhonePanoramaApp
             }
         }
 
+        private void GetDailyDeviations(string url)
+        {
+            var targetUri = new System.Uri(url);
+            var request = (HttpWebRequest)HttpWebRequest.Create(targetUri);
+            request.BeginGetResponse(DailyDeviationCallback, request);
+        }
+
         private void GetMostPopular(string url)
         {
             var targetUri = new System.Uri(url);
@@ -59,6 +67,19 @@ namespace WinPhonePanoramaApp
             var targetUri = new System.Uri(url);
             var request = (HttpWebRequest)HttpWebRequest.Create(targetUri);
             request.BeginGetResponse(LatestCallback, request);
+        }
+
+        private void DailyDeviationCallback(IAsyncResult callbackResult)
+        {
+            var myRequest = (HttpWebRequest)callbackResult.AsyncState;
+            var myResponse = (HttpWebResponse)myRequest.EndGetResponse(callbackResult);
+
+            using (var httpwebStreamReader = new StreamReader(myResponse.GetResponseStream()))
+            {
+                string results = httpwebStreamReader.ReadToEnd();
+                Deployment.Current.Dispatcher.BeginInvoke(() => ParseRssDataIntoCollection(results, DailyDeviationItems));
+            }
+            myResponse.Close();
         }
 
         private void MostPopularCallback(IAsyncResult callbackResult)

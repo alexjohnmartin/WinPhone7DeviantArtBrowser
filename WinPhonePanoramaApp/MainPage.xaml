@@ -21,19 +21,40 @@
         <!--Panorama control-->
         <controls:Panorama Title="dA browser">
             <controls:Panorama.Background>
-                <ImageBrush ImageSource="GreenShadesBackground.png"/>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="DarkGreen" Offset="0.0" />
+                    <GradientStop Color="Green" Offset="0.25" />
+                    <GradientStop Color="DarkSlateGray" Offset="0.75" />
+                    <GradientStop Color="LimeGreen" Offset="1.0" />
+                </LinearGradientBrush>
+                <!--<ImageBrush ImageSource="GreenShadesBackground.png"/>-->
             </controls:Panorama.Background>
- 
-            <!--Panorama item one-->
+
+            <!--Daily deviations-->
+            <controls:PanoramaItem Header="daily deviation">
+                <!--Double line list with text wrapping-->
+                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding DailyDeviationItems}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,17" Tap="StackPanel_Tap">
+                                <Image Height="200" Width="200" Margin="12,0,9,0" Source="{Binding ImageUrl}" />
+                                <StackPanel Width="311">
+                                    <TextBlock Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                    <TextBlock Text="{Binding Author}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem>
+
+            <!--Most popular-->
             <controls:PanoramaItem Header="most popular">
                 <!--Double line list with text wrapping-->
                 <ListBox Margin="0,0,-12,0" ItemsSource="{Binding MostPopularItems}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,17" Tap="StackPanel_Tap">
-
-                                <!--Replace rectangle with image
-                                <Rectangle Height="200" Width="200" Fill="#FFE5001b" Margin="12,0,9,0"/>-->
                                 <Image Height="200" Width="200" Margin="12,0,9,0" Source="{Binding ImageUrl}" />
                                 <StackPanel Width="311">
                                     <TextBlock Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
@@ -45,7 +66,7 @@
                 </ListBox>
             </controls:PanoramaItem>
  
-            <!--Panorama item two-->
+            <!--Latest-->
             <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
             <controls:PanoramaItem Header="latest">
                 <!--Double line list with image placeholder and text wrapping-->
