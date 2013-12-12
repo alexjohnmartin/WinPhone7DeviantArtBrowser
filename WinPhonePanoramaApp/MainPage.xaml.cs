@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Phone.Controls;
 
@@ -28,7 +29,10 @@ namespace WinPhonePanoramaApp
 
         private void StackPanel_Tap(object sender, GestureEventArgs e)
         {
-            const string testTitle = "test image title";
+            var stackPanel = (StackPanel) sender;
+            string testTitle = stackPanel.Tag.ToString();
+
+            //string testTitle = "test image title";
             NavigationService.Navigate(new Uri("/Details.xaml?title=" + testTitle, UriKind.Relative));
         }
     }

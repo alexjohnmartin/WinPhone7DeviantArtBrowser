@@ -36,7 +36,7 @@
                 <ListBox Margin="0,0,-12,0" ItemsSource="{Binding DailyDeviationItems}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,17" Tap="StackPanel_Tap">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,17" Tap="StackPanel_Tap" Tag="{Binding Title}">
                                 <Image Height="200" Width="200" Margin="12,0,9,0" Source="{Binding ImageUrl}" />
                                 <StackPanel Width="311">
                                     <TextBlock Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
