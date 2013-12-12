@@ -84,6 +84,15 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
+
+            <!--About-->
+            <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
+            <controls:PanoramaItem Header="about">
+                <StackPanel Width="411">
+                    <TextBlock Text="Twitter: @alexjohnmartin" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="10,0,0,30"/>
+                    <TextBlock Text="LinkedIn: www.linkedin.com/profile/view?id=13083750" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="10,0,0,30"/>
+                </StackPanel>
+            </controls:PanoramaItem>
         </controls:Panorama>
     </Grid>
 </phone:PhoneApplicationPage>
