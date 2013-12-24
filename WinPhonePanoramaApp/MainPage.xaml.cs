@@ -29,13 +29,22 @@ namespace WinPhonePanoramaApp
 
         private void StackPanel_Tap(object sender, GestureEventArgs e)
         {
-            var stackPanel = (StackPanel) sender;
-            var itemText = stackPanel.Tag.ToString();
-            string testTitle = itemText.Substring(itemText.IndexOf("|") + 1); 
-            string imageUrl = itemText.Substring(0, itemText.IndexOf("|")); 
+            try
+            {
+                var stackPanel = (StackPanel)sender;
+                var itemText = stackPanel.Tag.ToString();
+                string testTitle = itemText.Substring(itemText.IndexOf("|") + 1);
+                string imageUrl = itemText.Substring(0, itemText.IndexOf("|"));
 
-            //string testTitle = "test image title";
-            NavigationService.Navigate(new Uri("/Details.xaml?title=" + testTitle + "&imageUrl=" + imageUrl, UriKind.Relative));
+                //string testTitle = "test image title";
+                NavigationService.Navigate(new Uri("/Details.xaml?title=" + testTitle + "&imageUrl=" + imageUrl, UriKind.Relative));
+            }
+            catch (Exception)
+            {
+                //log error
+
+                //redirect to 'about' page?
+            }
         }
     }
 }
