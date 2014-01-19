@@ -99,9 +99,9 @@
         <!-- Feedback overlay using default values -->
         <ctrl:FeedbackOverlay x:Name="FeedbackOverlay"
                               Grid.RowSpan="2"
-                              FeedbackTo="me@test.com"
-                              ApplicationName="RateMyXamlAppWP7"
-                              CompanyName="MyCompany"/>
+                              FeedbackTo="alex.john.martin@gmail.com"
+                              ApplicationName="dA Browser (WinPhone7)"
+                              CompanyName="Nocturnal Tendencies"/>
 
         <!-- Fully customized FeedbackOverlay component -->
         <!--
