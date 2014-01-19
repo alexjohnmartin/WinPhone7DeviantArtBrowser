@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using RateMyApp.Resources;
 
 namespace WinPhonePanoramaApp
 {
@@ -15,8 +17,35 @@ namespace WinPhonePanoramaApp
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
-            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
+            Loaded += MainPage_Loaded;
+
+            BuildApplicationBar();
+
+            FeedbackOverlay.VisibilityChanged += FeedbackOverlay_VisibilityChanged;
         }
+
+        public void FeedbackOverlay_VisibilityChanged(object sender, EventArgs e)
+        {
+            ApplicationBar.IsVisible = (FeedbackOverlay.Visibility != Visibility.Visible);
+        }
+
+        private void BuildApplicationBar()
+        {
+            // Set the page's ApplicationBar to a new instance of ApplicationBar
+            ApplicationBar = new ApplicationBar {Mode = ApplicationBarMode.Minimized};
+
+            // Create reset menu item
+            var appBarMenuItem = new ApplicationBarMenuItem("reset");
+            //var appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
+            appBarMenuItem.Click += new EventHandler(Reset_Click);
+            ApplicationBar.MenuItems.Add(appBarMenuItem);
+        }
+
+        private void Reset_Click(object sender, EventArgs e)
+        {
+            FeedbackOverlay.Reset();
+        }
+
 
         // Load data for the ViewModel MostPopularItems
         private void MainPage_Loaded(object sender, RoutedEventArgs e)

@@ -7,6 +7,7 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:ctrl="clr-namespace:RateMyApp.Controls;assembly=RateMyApp"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
     d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -94,5 +95,35 @@
                 </StackPanel>
             </controls:PanoramaItem>
         </controls:Panorama>
+
+        <!-- Feedback overlay using default values -->
+        <ctrl:FeedbackOverlay x:Name="FeedbackOverlay"
+                              Grid.RowSpan="2"
+                              FeedbackTo="me@test.com"
+                              ApplicationName="RateMyXamlAppWP7"
+                              CompanyName="MyCompany"/>
+
+        <!-- Fully customized FeedbackOverlay component -->
+        <!--
+        <ctrl:FeedbackOverlay Grid.RowSpan="2"
+                              EnableAnimation="True"
+                              RatingTitle="RatingTitle"
+                              RatingMessage1="Rating Message 1"
+                              RatingMessage2="Rating Message 2"
+                              RatingYes="Yes"
+                              RatingNo="No"
+                              FeedbackTitle="FeedbackTitle"
+                              FeedbackMessage1="Feedback Message 1"
+                              FeedbackYes="Yes"
+                              FeedbackNo="No"
+                              FeedbackTo="{Binding Path=LocalizedResources.FeedbackTo, Source={StaticResource LocalizedStrings}}"
+                              FeedbackSubject="Feedback Subject"
+                              FeedbackBody="Feedback Body"
+                              CompanyName="MyCompany"
+                              FirstCount="5"
+                              SecondCount="10"
+                              CountDays="False"
+                              />
+        -->
     </Grid>
 </phone:PhoneApplicationPage>
