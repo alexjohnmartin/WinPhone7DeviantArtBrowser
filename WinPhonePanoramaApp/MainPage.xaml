@@ -94,8 +94,8 @@
         <ctrl:FeedbackOverlay x:Name="FeedbackOverlay"
                               Grid.RowSpan="2"
                               FeedbackTo="alex.john.martin@gmail.com"
-                              ApplicationName="dA Browser (WinPhone7)"
-                              CompanyName="Nocturnal Tendencies"/>
+                              ApplicationName="DeviantArt browser"
+                              CompanyName="nocturnal tendencies"/>
 
         <!-- Fully customized FeedbackOverlay component -->
         <!--

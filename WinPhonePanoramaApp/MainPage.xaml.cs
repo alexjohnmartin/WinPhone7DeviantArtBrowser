@@ -19,32 +19,32 @@ namespace WinPhonePanoramaApp
             DataContext = App.ViewModel;
             Loaded += MainPage_Loaded;
 
-            BuildApplicationBar();
+            //BuildApplicationBar();
 
-            FeedbackOverlay.VisibilityChanged += FeedbackOverlay_VisibilityChanged;
+            //FeedbackOverlay.VisibilityChanged += FeedbackOverlay_VisibilityChanged;
         }
 
-        public void FeedbackOverlay_VisibilityChanged(object sender, EventArgs e)
-        {
-            ApplicationBar.IsVisible = (FeedbackOverlay.Visibility != Visibility.Visible);
-        }
+        //public void FeedbackOverlay_VisibilityChanged(object sender, EventArgs e)
+        //{
+        //    ApplicationBar.IsVisible = (FeedbackOverlay.Visibility != Visibility.Visible);
+        //}
 
-        private void BuildApplicationBar()
-        {
-            // Set the page's ApplicationBar to a new instance of ApplicationBar
-            ApplicationBar = new ApplicationBar {Mode = ApplicationBarMode.Minimized};
+        //private void BuildApplicationBar()
+        //{
+        //    // Set the page's ApplicationBar to a new instance of ApplicationBar
+        //    ApplicationBar = new ApplicationBar {Mode = ApplicationBarMode.Minimized};
 
-            // Create reset menu item
-            var appBarMenuItem = new ApplicationBarMenuItem("reset");
-            //var appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-            appBarMenuItem.Click += new EventHandler(Reset_Click);
-            ApplicationBar.MenuItems.Add(appBarMenuItem);
-        }
+        //    // Create reset menu item
+        //    var appBarMenuItem = new ApplicationBarMenuItem("reset");
+        //    //var appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
+        //    appBarMenuItem.Click += new EventHandler(Reset_Click);
+        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
+        //}
 
-        private void Reset_Click(object sender, EventArgs e)
-        {
-            FeedbackOverlay.Reset();
-        }
+        //private void Reset_Click(object sender, EventArgs e)
+        //{
+        //    FeedbackOverlay.Reset();
+        //}
 
 
         // Load data for the ViewModel MostPopularItems
