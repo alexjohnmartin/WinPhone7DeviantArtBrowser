@@ -22,13 +22,7 @@
         <!--Panorama control-->
         <controls:Panorama Title="dA browser">
             <controls:Panorama.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="DarkGreen" Offset="0.0" />
-                    <GradientStop Color="Green" Offset="0.25" />
-                    <GradientStop Color="DarkSlateGray" Offset="0.75" />
-                    <GradientStop Color="LimeGreen" Offset="1.0" />
-                </LinearGradientBrush>
-                <!--<ImageBrush ImageSource="GreenShadesBackground.png"/>-->
+                <ImageBrush ImageSource="HoneycombBackground.png"/>
             </controls:Panorama.Background>
 
             <!--Daily deviations-->

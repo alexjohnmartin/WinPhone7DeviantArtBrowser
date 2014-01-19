@@ -102,6 +102,7 @@
     <Resource Include="da300x300.png" />
     <Resource Include="da62x62.png" />
     <Resource Include="GreenShadesBackground.png" />
+    <Resource Include="HoneycombBackground.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
