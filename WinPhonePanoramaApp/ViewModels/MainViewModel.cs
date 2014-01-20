@@ -173,7 +173,10 @@ namespace WinPhonePanoramaApp
 
                 //is a 'mature' image
                 var wholeItem = results.Substring(0, results.IndexOf("</item>"));
-                if (!wholeItem.ToLower().Contains("ismature"))
+                if (!wholeItem.ToLower().Contains("ismature") &&
+                    wholeItem.Contains("<title>") &&
+                    wholeItem.Contains("<media:credit role=\"author\" scheme=\"urn:ebu\">") &&
+                    wholeItem.Contains("<media:content url=\""))
                 {
                     //<title>Dubstep Girl</title>
                     var startIndex = results.IndexOf("<title>") + 7;
@@ -181,12 +184,21 @@ namespace WinPhonePanoramaApp
                     //<media:credit role="author" scheme="urn:ebu">MrPyrOs</media:credit>
                     startIndex = results.IndexOf("<media:credit role=\"author\" scheme=\"urn:ebu\">") + 45;
                     var author = results.Substring(startIndex, results.IndexOf("</media:credit>") - startIndex);
-                    //<media:thumbnail url="http://th06.deviantart.net/fs71/150/f/2013/344/e/b/dubstep_girl_by_mrpyros-d6xfbik.png" height="60" width="150"/>
-                    var thumbnail = results.Substring(results.IndexOf("<media:thumbnail url=\"") + 22);
-                    thumbnail = thumbnail.Substring(0, thumbnail.IndexOf("\""));
                     //<media:content url="http://fc02.deviantart.net/fs70/i/2011/074/4/5/poinson_frogs_by_greenestreet-d3bp5bu.jpg" height="484" width="900" medium="image"/>
                     var fullImageUrl = results.Substring(results.IndexOf("<media:content url=\"") + 20);
                     fullImageUrl = fullImageUrl.Substring(0, fullImageUrl.IndexOf("\""));
+
+                    string thumbnail; 
+                    if (wholeItem.Contains("<media:thumbnail url=\""))
+                    {
+                        //<media:thumbnail url="http://th06.deviantart.net/fs71/150/f/2013/344/e/b/dubstep_girl_by_mrpyros-d6xfbik.png" height="60" width="150"/>
+                        thumbnail = results.Substring(results.IndexOf("<media:thumbnail url=\"") + 22);
+                        thumbnail = thumbnail.Substring(0, thumbnail.IndexOf("\""));
+                    }
+                    else
+                    {
+                        thumbnail = fullImageUrl; 
+                    }
 
                     items.Add(new ItemViewModel
                                   {
