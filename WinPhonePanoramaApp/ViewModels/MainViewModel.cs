@@ -187,6 +187,8 @@ namespace WinPhonePanoramaApp
                     //<media:content url="http://fc02.deviantart.net/fs70/i/2011/074/4/5/poinson_frogs_by_greenestreet-d3bp5bu.jpg" height="484" width="900" medium="image"/>
                     var fullImageUrl = results.Substring(results.IndexOf("<media:content url=\"") + 20);
                     fullImageUrl = fullImageUrl.Substring(0, fullImageUrl.IndexOf("\""));
+                    
+                    if (!fullImageUrl.ToLower().EndsWith(".jpg")) continue;
 
                     string thumbnail; 
                     if (wholeItem.Contains("<media:thumbnail url=\""))
