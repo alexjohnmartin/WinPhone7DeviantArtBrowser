@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Net;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace WinPhonePanoramaApp
 {
@@ -13,11 +15,13 @@ namespace WinPhonePanoramaApp
         {
             DailyDeviationItems = new ObservableCollection<ItemViewModel>();
             MostPopularItems = new ObservableCollection<ItemViewModel>();
+            DownloadedItems = new ObservableCollection<ItemViewModel>();
             LatestItems = new ObservableCollection<ItemViewModel>();
         }
 
         public ObservableCollection<ItemViewModel> DailyDeviationItems { get; private set; }
         public ObservableCollection<ItemViewModel> MostPopularItems { get; private set; }
+        public ObservableCollection<ItemViewModel> DownloadedItems { get; private set; }
         public ObservableCollection<ItemViewModel> LatestItems { get; private set; }
 
         public bool IsDataLoaded
@@ -33,7 +37,8 @@ namespace WinPhonePanoramaApp
         {
             GetDailyDeviations("http://backend.deviantart.com/rss.xml?q=special%3Add");
             GetMostPopular("http://backend.deviantart.com/rss.xml?type=deviation&q=boost%3Apopular");
-            GetLatest("http://backend.deviantart.com/rss.xml?type=deviation&q=sort%3Atime"); 
+            GetLatest("http://backend.deviantart.com/rss.xml?type=deviation&q=sort%3Atime");
+            GetDownloaded(); 
 
             IsDataLoaded = true;
         }
@@ -67,6 +72,56 @@ namespace WinPhonePanoramaApp
             var targetUri = new System.Uri(url);
             var request = (HttpWebRequest)HttpWebRequest.Create(targetUri);
             request.BeginGetResponse(LatestCallback, request);
+        }
+
+        private void GetDownloaded()
+        {
+            using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                foreach(var filename in iso.GetFileNames())
+                {
+                    if (filename.Contains(".jpg"))
+                    {
+                        DownloadedItems.Add(new ItemViewModel
+                                                {
+                                                    Title = ExtractTitleFromFilename(filename),
+                                                    Author = ExtractAuthorFromFilename(filename),
+                                                    ImageUrl = GetImageFromIsolatedStorage(filename),
+                                                    FullDetails = filename + "|" + ExtractTitleFromFilename(filename)
+                                                });
+                    }
+                }
+            }
+        }
+
+        private static BitmapImage GetImageFromIsolatedStorage(string imageName)
+        {
+            var bimg = new BitmapImage();
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (var stream = iso.OpenFile(imageName, FileMode.Open, FileAccess.Read))
+                {
+                    bimg.SetSource(stream);
+                }
+            }
+            return bimg;
+        }
+
+        private string ExtractAuthorFromFilename(string filename)
+        {
+            if (!filename.Contains("_by_")) return "unknown"; 
+
+            var author = filename.Substring(filename.IndexOf("_by_") + 4);
+            author = author.Substring(0, author.IndexOf("-"));
+            return author.Substring(0, 1).ToUpper() + author.Substring(1); 
+        }
+
+        private string ExtractTitleFromFilename(string filename)
+        {
+            if (!filename.Contains("_by_")) return "unknown"; 
+
+            var title = filename.Substring(0, filename.IndexOf("_by_")).Replace('_', ' ');
+            return title.Substring(0, 1).ToUpper() + title.Substring(1); 
         }
 
         private void DailyDeviationCallback(IAsyncResult callbackResult)

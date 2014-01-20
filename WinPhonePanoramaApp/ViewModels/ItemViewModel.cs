@@ -39,8 +39,8 @@ namespace WinPhonePanoramaApp
             }
         }
 
-        private string _imageUrl;
-        public string ImageUrl
+        private object _imageUrl;
+        public object ImageUrl
         {
             get
             {

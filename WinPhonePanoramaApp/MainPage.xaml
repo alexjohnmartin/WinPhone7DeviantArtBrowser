@@ -80,6 +80,24 @@
                 </ListBox>
             </controls:PanoramaItem>
 
+            <!--downloaded-->
+            <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
+            <controls:PanoramaItem Header="downloaded">
+                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding DownloadedItems}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,17" Tap="StackPanel_Tap" Tag="{Binding FullDetails}">
+                                <Image Height="200" Width="200" Margin="12,0,9,0" Source="{Binding ImageUrl}" />
+                                <StackPanel Width="311">
+                                    <TextBlock Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                    <TextBlock Text="{Binding Author}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem>
+
             <!--About-->
             <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
             <controls:PanoramaItem Header="about">

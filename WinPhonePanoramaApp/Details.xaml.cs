@@ -31,11 +31,31 @@ namespace WinPhonePanoramaApp
             if (NavigationContext.QueryString.ContainsKey("imageUrl"))
             {
                 _imageUrl = NavigationContext.QueryString["imageUrl"];
-                ImageView.Source = (ImageSource)new ImageSourceConverter().ConvertFromString(_imageUrl);
-
-                var item = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
-                item.Text = GetDownloadText();
+                if (_imageUrl.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    ImageView.Source = (ImageSource)new ImageSourceConverter().ConvertFromString(_imageUrl);
+                    var item = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
+                    item.Text = GetDownloadText();
+                }
+                else
+                {
+                    ImageView.Source = GetImageFromIsolatedStorage(_imageUrl);
+                    ApplicationBar.IsVisible = false; 
+                }
             }
+        }
+
+        private static BitmapImage GetImageFromIsolatedStorage(string imageName)
+        {
+            var bimg = new BitmapImage();
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (var stream = iso.OpenFile(imageName, FileMode.Open, FileAccess.Read))
+                {
+                    bimg.SetSource(stream);
+                }
+            }
+            return bimg;
         }
 
         private void BuildApplicationBar()
