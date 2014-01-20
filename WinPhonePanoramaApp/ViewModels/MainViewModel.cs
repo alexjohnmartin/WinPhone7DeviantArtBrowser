@@ -76,6 +76,7 @@ namespace WinPhonePanoramaApp
 
         private void GetDownloaded()
         {
+            DownloadedItems.Clear();
             using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 foreach(var filename in iso.GetFileNames())
@@ -201,6 +202,11 @@ namespace WinPhonePanoramaApp
             }
 
             //mostPopularItems.Add(new ItemViewModel() { Title = "runtime sixteen", Author = "Nascetur pharetra placerat pulvinar", ImageUrl = "Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum" });
+        }
+
+        public void UpdateDownloads()
+        {
+            GetDownloaded(); 
         }
     }
 }

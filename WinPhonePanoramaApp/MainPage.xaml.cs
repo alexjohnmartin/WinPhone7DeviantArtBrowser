@@ -54,6 +54,10 @@ namespace WinPhonePanoramaApp
             {
                 App.ViewModel.LoadData();
             }
+            else
+            {
+                App.ViewModel.UpdateDownloads();
+            }
         }
 
         private void StackPanel_Tap(object sender, GestureEventArgs e)
