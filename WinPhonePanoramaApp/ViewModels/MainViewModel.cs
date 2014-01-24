@@ -77,35 +77,16 @@ namespace WinPhonePanoramaApp
         private void GetDownloaded()
         {
             DownloadedItems.Clear();
-            using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
+            foreach(var filename in IsolatedStorageHelper.GetImageFilenames())
             {
-                foreach(var filename in iso.GetFileNames())
-                {
-                    if (filename.EndsWith(".jpg") || filename.EndsWith(".png"))
+                DownloadedItems.Add(new ItemViewModel
                     {
-                        DownloadedItems.Add(new ItemViewModel
-                                                {
-                                                    Title = ExtractTitleFromFilename(filename),
-                                                    Author = ExtractAuthorFromFilename(filename),
-                                                    ImageUrl = GetImageFromIsolatedStorage(filename),
-                                                    FullDetails = filename + "|" + ExtractTitleFromFilename(filename)
-                                                });
-                    }
-                }
+                        Title = ExtractTitleFromFilename(filename),
+                        Author = ExtractAuthorFromFilename(filename),
+                        ImageUrl = IsolatedStorageHelper.GetImageFromIsolatedStorage(filename),
+                        FullDetails = filename + "|" + ExtractTitleFromFilename(filename)
+                    });
             }
-        }
-
-        private static BitmapImage GetImageFromIsolatedStorage(string imageName)
-        {
-            var bimg = new BitmapImage();
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (var stream = iso.OpenFile(imageName, FileMode.Open, FileAccess.Read))
-                {
-                    bimg.SetSource(stream);
-                }
-            }
-            return bimg;
         }
 
         private string ExtractAuthorFromFilename(string filename)

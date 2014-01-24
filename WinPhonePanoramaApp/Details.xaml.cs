@@ -35,27 +35,14 @@ namespace WinPhonePanoramaApp
                 {
                     ImageView.Source = (ImageSource)new ImageSourceConverter().ConvertFromString(_imageUrl);
                     var item = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
-                    item.Text = GetDownloadText();
+                    item.Text = IsolatedStorageHelper.DoesFileExist(GetFilenameFromUrl(_imageUrl)) ? "re-download" : "download";
                 }
                 else
                 {
-                    ImageView.Source = GetImageFromIsolatedStorage(_imageUrl);
+                    ImageView.Source = IsolatedStorageHelper.GetImageFromIsolatedStorage(_imageUrl);
                     ApplicationBar.IsVisible = false; 
                 }
             }
-        }
-
-        private static BitmapImage GetImageFromIsolatedStorage(string imageName)
-        {
-            var bimg = new BitmapImage();
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (var stream = iso.OpenFile(imageName, FileMode.Open, FileAccess.Read))
-                {
-                    bimg.SetSource(stream);
-                }
-            }
-            return bimg;
         }
 
         private void BuildApplicationBar()
@@ -67,14 +54,6 @@ namespace WinPhonePanoramaApp
             var appBarMenuItem = new ApplicationBarMenuItem("download");
             appBarMenuItem.Click += Download_Click;
             ApplicationBar.MenuItems.Add(appBarMenuItem);
-        }
-
-        private string GetDownloadText()
-        {
-            if (DoesFileExist(GetFilenameFromUrl(_imageUrl)))
-                return "re-download";
-
-            return "download"; 
         }
 
         private void Download_Click(object sender, EventArgs e)
@@ -95,7 +74,9 @@ namespace WinPhonePanoramaApp
         {
             if (e.Error == null)
             {
-                SaveToJpeg(e.Result, GetFilenameFromUrl(_imageUrl));
+                IsolatedStorageHelper.SaveToJpeg(e.Result, GetFilenameFromUrl(_imageUrl));
+                var item = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
+                item.Text = "re-download";
             }
             else
             {
@@ -108,34 +89,6 @@ namespace WinPhonePanoramaApp
             if (!imageUrl.Contains("/")) return imageUrl;
             return imageUrl.Substring(imageUrl.LastIndexOf('/') + 1); 
         }
-
-        private bool DoesFileExist(string imageName)
-        {
-            using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                return iso.FileExists(imageName);
-            }
-        }
-
-        private void SaveToJpeg(Stream stream, string imageName)
-        {
-            using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (IsolatedStorageFileStream isostream = iso.CreateFile(imageName))
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.SetSource(stream);
-                    WriteableBitmap wb = new WriteableBitmap(bitmap);
-                    // Encode WriteableBitmap object to a JPEG stream. 
-                    Extensions.SaveJpeg(wb, isostream, wb.PixelWidth, wb.PixelHeight, 0, 85);
-                    isostream.Close();
-
-                    ShowToast("Image downloaded");
-                    var item = (ApplicationBarMenuItem) ApplicationBar.MenuItems[0];
-                    item.Text = GetDownloadText(); 
-                }
-            }
-        } 
 
         private void ShowToast(string message)
         {
