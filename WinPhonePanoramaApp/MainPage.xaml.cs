@@ -41,7 +41,14 @@ namespace WinPhonePanoramaApp
                 tileData.WideBackContent = "wide content";
                 tileData.WideBackgroundImage = new Uri("da346x173.png", UriKind.Relative);
                 tileData.WideBackBackgroundImage = new Uri("da346x173.png", UriKind.Relative);
-                
+
+                var filenames = IsolatedStorageHelper.GetImageFilenames(); 
+                if (filenames.Any())
+                {
+                    tileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/" + filenames.First(), UriKind.Absolute);
+                    tileData.WideBackBackgroundImage = new Uri("isostore:/Shared/ShellContent/" + filenames.First(), UriKind.Absolute);
+                }
+
                 //Debug.WriteLine("Activating live tile: " + Mangopollo.Utils.CanUseLiveTiles);
                 tileId.Update(tileData);
             }

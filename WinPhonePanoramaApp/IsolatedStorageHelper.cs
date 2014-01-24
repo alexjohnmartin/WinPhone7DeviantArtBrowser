@@ -13,7 +13,7 @@ namespace WinPhonePanoramaApp
             var bimg = new BitmapImage();
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                using (var stream = iso.OpenFile(imageName, FileMode.Open, FileAccess.Read))
+                using (var stream = iso.OpenFile(@"Shared\ShellContent\" + imageName, FileMode.Open, FileAccess.Read))
                 {
                     bimg.SetSource(stream);
                 }
@@ -25,7 +25,7 @@ namespace WinPhonePanoramaApp
         {
             using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                foreach (var filename in iso.GetFileNames())
+                foreach (var filename in iso.GetFileNames(@"Shared\ShellContent\*"))
                 {
                     if (filename.EndsWith(".jpg") || filename.EndsWith(".png"))
                         yield return filename;
@@ -37,7 +37,7 @@ namespace WinPhonePanoramaApp
         {
             using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                return iso.FileExists(imageName);
+                return iso.FileExists(@"Shared\ShellContent\" + imageName);
             }
         }
 
@@ -45,7 +45,15 @@ namespace WinPhonePanoramaApp
         {
             using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                using (IsolatedStorageFileStream isostream = iso.CreateFile(imageName))
+                if (!iso.DirectoryExists(@"Shared\ShellContent"))
+                {
+                    iso.CreateDirectory(@"Shared\ShellContent");
+                }
+            }
+
+            using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (IsolatedStorageFileStream isostream = iso.CreateFile(@"Shared\ShellContent\" + imageName))
                 {
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.SetSource(stream);
