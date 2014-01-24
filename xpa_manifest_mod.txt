@@ -1,0 +1,3 @@
+<AppExtra xmlns="" AppPlatformVersion="8.0">
+    <Extra Name="Tiles"/>
+</AppExtra>
