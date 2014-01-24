@@ -39,8 +39,8 @@ namespace WinPhonePanoramaApp
                 tileData.BackgroundImage = new Uri("da173x173.png", UriKind.Relative);
                 tileData.BackBackgroundImage = new Uri("da173x173.png", UriKind.Relative);
                 tileData.WideBackContent = "wide content";
-                tileData.WideBackgroundImage = new Uri("da173x173.png", UriKind.Relative);
-                tileData.WideBackBackgroundImage = new Uri("da173x173.png", UriKind.Relative);
+                tileData.WideBackgroundImage = new Uri("da346x173.png", UriKind.Relative);
+                tileData.WideBackBackgroundImage = new Uri("da346x173.png", UriKind.Relative);
                 
                 //Debug.WriteLine("Activating live tile: " + Mangopollo.Utils.CanUseLiveTiles);
                 tileId.Update(tileData);
