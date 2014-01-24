@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Mangopollo.Tiles;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RateMyApp.Resources;
@@ -19,9 +21,30 @@ namespace WinPhonePanoramaApp
             DataContext = App.ViewModel;
             Loaded += MainPage_Loaded;
 
+            SetTileData();
+
             //BuildApplicationBar();
 
             //FeedbackOverlay.VisibilityChanged += FeedbackOverlay_VisibilityChanged;
+        }
+
+        private void SetTileData()
+        {
+            var tileId = ShellTile.ActiveTiles.FirstOrDefault();
+            if (tileId != null)
+            {
+                var tileData = new FlipTileData();
+                tileData.Title = "DeviantArt browser";
+                tileData.BackContent = "back content";
+                tileData.BackgroundImage = new Uri("da173x173.png", UriKind.Relative);
+                tileData.BackBackgroundImage = new Uri("da173x173.png", UriKind.Relative);
+                tileData.WideBackContent = "wide content";
+                tileData.WideBackgroundImage = new Uri("da173x173.png", UriKind.Relative);
+                tileData.WideBackBackgroundImage = new Uri("da173x173.png", UriKind.Relative);
+                
+                //Debug.WriteLine("Activating live tile: " + Mangopollo.Utils.CanUseLiveTiles);
+                tileId.Update(tileData);
+            }
         }
 
         //public void FeedbackOverlay_VisibilityChanged(object sender, EventArgs e)

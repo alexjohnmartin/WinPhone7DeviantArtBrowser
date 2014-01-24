@@ -81,7 +81,7 @@ namespace WinPhonePanoramaApp
             {
                 foreach(var filename in iso.GetFileNames())
                 {
-                    if (filename.Contains(".jpg"))
+                    if (filename.EndsWith(".jpg") || filename.EndsWith(".png"))
                     {
                         DownloadedItems.Add(new ItemViewModel
                                                 {
@@ -113,7 +113,11 @@ namespace WinPhonePanoramaApp
             if (!filename.Contains("_by_")) return "unknown"; 
 
             var author = filename.Substring(filename.IndexOf("_by_") + 4);
-            author = author.Substring(0, author.IndexOf("-"));
+            if (author.Contains("-"))
+                author = author.Substring(0, author.IndexOf("-"));
+            else
+                author = author.Substring(0, author.IndexOf("."));
+
             return author.Substring(0, 1).ToUpper() + author.Substring(1); 
         }
 
@@ -188,7 +192,8 @@ namespace WinPhonePanoramaApp
                     var fullImageUrl = results.Substring(results.IndexOf("<media:content url=\"") + 20);
                     fullImageUrl = fullImageUrl.Substring(0, fullImageUrl.IndexOf("\""));
                     
-                    if (!fullImageUrl.ToLower().EndsWith(".jpg")) continue;
+                    if (!fullImageUrl.ToLower().EndsWith(".jpg") &&
+                        !fullImageUrl.ToLower().EndsWith(".png")) continue;
 
                     string thumbnail; 
                     if (wholeItem.Contains("<media:thumbnail url=\""))
