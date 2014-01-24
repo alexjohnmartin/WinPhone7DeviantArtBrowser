@@ -8,7 +8,7 @@ namespace WinPhonePanoramaApp
 {
     public class IsolatedStorageHelper
     {
-        public static BitmapImage GetImageFromIsolatedStorage(string imageName)
+        public static BitmapImage GetImage(string imageName)
         {
             var bimg = new BitmapImage();
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
@@ -19,6 +19,14 @@ namespace WinPhonePanoramaApp
                 }
             }
             return bimg;
+        }
+
+        public static void DeleteImage(string imageName)
+        {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                iso.DeleteFile(@"Shared\ShellContent\" + imageName);
+            }
         }
 
         public static IEnumerable<string> GetImageFilenames()

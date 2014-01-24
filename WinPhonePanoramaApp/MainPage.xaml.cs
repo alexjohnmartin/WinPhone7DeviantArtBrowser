@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,25 +34,52 @@ namespace WinPhonePanoramaApp
             var tileId = ShellTile.ActiveTiles.FirstOrDefault();
             if (tileId != null)
             {
-                var tileData = new FlipTileData();
-                tileData.Title = "DeviantArt browser";
-                tileData.BackContent = "back content";
-                tileData.BackgroundImage = new Uri("da173x173.png", UriKind.Relative);
-                tileData.BackBackgroundImage = new Uri("da173x173.png", UriKind.Relative);
-                tileData.WideBackContent = "wide content";
-                tileData.WideBackgroundImage = new Uri("da346x173.png", UriKind.Relative);
-                tileData.WideBackBackgroundImage = new Uri("da346x173.png", UriKind.Relative);
+                var images = GetImageUriList(); 
+                //var tileData = new CycleTileData
+                //{
+                //    Title = "DeviantArt browser",
+                //    Count = images.Count(),
+                //    CycleImages = images,
+                //    SmallBackgroundImage = new Uri("da62x62.png", UriKind.Relative),
+                //};
 
-                var filenames = IsolatedStorageHelper.GetImageFilenames(); 
-                if (filenames.Any())
+                images = images.OrderBy(emp => Guid.NewGuid());
+                var tileData = new FlipTileData
                 {
-                    tileData.BackBackgroundImage = new Uri("isostore:/Shared/ShellContent/" + filenames.First(), UriKind.Absolute);
-                    tileData.WideBackBackgroundImage = new Uri("isostore:/Shared/ShellContent/" + filenames.First(), UriKind.Absolute);
-                }
-
+                    Title = "DeviantArt browser",
+                    BackContent = "dA",
+                    BackgroundImage = new Uri("da173x173.png", UriKind.Relative),
+                    WideBackContent = "dA",
+                    WideBackgroundImage = new Uri("da346x173.png", UriKind.Relative),
+                    BackBackgroundImage = images.First(),
+                    WideBackBackgroundImage = images.First()
+                };
+              
                 //Debug.WriteLine("Activating live tile: " + Mangopollo.Utils.CanUseLiveTiles);
                 tileId.Update(tileData);
             }
+        }
+
+        private IEnumerable<Uri> GetImageUriList()
+        {
+            var uris = new List<Uri>(); 
+            var filenames = IsolatedStorageHelper.GetImageFilenames();
+            if (filenames.Any())
+            {
+                int count = 0;
+                foreach (var filename in filenames)
+                {
+                    count++;
+                    uris.Add(new Uri("isostore:/Shared/ShellContent/" + filename, UriKind.Absolute));
+                    if (count >= 9) break;
+                }
+            }
+            else
+            {
+                uris.Add(new Uri("da173x173.png", UriKind.Relative)); 
+            }
+
+            return uris; 
         }
 
         //public void FeedbackOverlay_VisibilityChanged(object sender, EventArgs e)
@@ -87,6 +115,7 @@ namespace WinPhonePanoramaApp
             else
             {
                 App.ViewModel.UpdateDownloads();
+                SetTileData();
             }
         }
 

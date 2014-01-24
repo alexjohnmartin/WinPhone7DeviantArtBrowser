@@ -83,7 +83,7 @@ namespace WinPhonePanoramaApp
                     {
                         Title = ExtractTitleFromFilename(filename),
                         Author = ExtractAuthorFromFilename(filename),
-                        ImageUrl = IsolatedStorageHelper.GetImageFromIsolatedStorage(filename),
+                        ImageUrl = IsolatedStorageHelper.GetImage(filename),
                         FullDetails = filename + "|" + ExtractTitleFromFilename(filename)
                     });
             }

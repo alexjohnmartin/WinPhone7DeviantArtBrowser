@@ -1,10 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.IO.IsolatedStorage;
 using System.Net;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
@@ -34,14 +31,13 @@ namespace WinPhonePanoramaApp
                 if (_imageUrl.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
                 {
                     ImageView.Source = (ImageSource)new ImageSourceConverter().ConvertFromString(_imageUrl);
-                    var item = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
-                    item.Text = IsolatedStorageHelper.DoesFileExist(GetFilenameFromUrl(_imageUrl)) ? "re-download" : "download";
                 }
                 else
                 {
-                    ImageView.Source = IsolatedStorageHelper.GetImageFromIsolatedStorage(_imageUrl);
-                    ApplicationBar.IsVisible = false; 
+                    ImageView.Source = IsolatedStorageHelper.GetImage(_imageUrl);
                 }
+                    
+                UpdateBarMenuItem();
             }
         }
 
@@ -75,8 +71,7 @@ namespace WinPhonePanoramaApp
             if (e.Error == null)
             {
                 IsolatedStorageHelper.SaveToJpeg(e.Result, GetFilenameFromUrl(_imageUrl));
-                var item = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
-                item.Text = "re-download";
+                UpdateBarMenuItem();
             }
             else
             {
@@ -84,18 +79,38 @@ namespace WinPhonePanoramaApp
             }
         }
 
-        private string GetFilenameFromUrl(string imageUrl)
+        private void Delete_Click(object sender, EventArgs e)
+        {
+            IsolatedStorageHelper.DeleteImage(GetFilenameFromUrl(_imageUrl));
+            UpdateBarMenuItem();
+        }
+
+        private void UpdateBarMenuItem()
+        {
+            var item = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
+            item.Click -= Download_Click;
+            item.Click -= Delete_Click; 
+            if (!IsolatedStorageHelper.DoesFileExist(GetFilenameFromUrl(_imageUrl)))
+            {
+                item.Text = "download";
+                item.Click += Download_Click;
+            }
+            else
+            {
+                item.Text = "delete";
+                item.Click += Delete_Click;
+            }
+        }
+
+        private static string GetFilenameFromUrl(string imageUrl)
         {
             if (!imageUrl.Contains("/")) return imageUrl;
             return imageUrl.Substring(imageUrl.LastIndexOf('/') + 1); 
         }
 
-        private void ShowToast(string message)
+        private static void ShowToast(string message)
         {
-            ShellToast toast = new ShellToast();
-            toast.Title = "Downloaded";
-            toast.Content = message;
-            toast.Show();
+            new ShellToast {Title = "Downloaded", Content = message}.Show();
         }
     }
 }
