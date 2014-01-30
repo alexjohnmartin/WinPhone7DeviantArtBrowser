@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Mangopollo;
 using Mangopollo.Tiles;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -31,32 +32,35 @@ namespace WinPhonePanoramaApp
 
         private void SetTileData()
         {
-            var tileId = ShellTile.ActiveTiles.FirstOrDefault();
-            if (tileId != null)
+            if (Utils.CanUseLiveTiles)
             {
-                var images = GetImageUriList(); 
-                //var tileData = new CycleTileData
-                //{
-                //    Title = "DeviantArt browser",
-                //    Count = images.Count(),
-                //    CycleImages = images,
-                //    SmallBackgroundImage = new Uri("da62x62.png", UriKind.Relative),
-                //};
-
-                images = images.OrderBy(emp => Guid.NewGuid());
-                var tileData = new FlipTileData
+                var tileId = ShellTile.ActiveTiles.FirstOrDefault();
+                if (tileId != null)
                 {
-                    Title = "DeviantArt browser",
-                    BackContent = "dA",
-                    BackgroundImage = new Uri("da173x173.png", UriKind.Relative),
-                    WideBackContent = "dA",
-                    WideBackgroundImage = new Uri("da346x173.png", UriKind.Relative),
-                    BackBackgroundImage = images.First(),
-                    WideBackBackgroundImage = images.First()
-                };
-              
-                //Debug.WriteLine("Activating live tile: " + Mangopollo.Utils.CanUseLiveTiles);
-                tileId.Update(tileData);
+                    var images = GetImageUriList();
+                    //var tileData = new CycleTileData
+                    //{
+                    //    Title = "DeviantArt browser",
+                    //    Count = images.Count(),
+                    //    CycleImages = images,
+                    //    SmallBackgroundImage = new Uri("da62x62.png", UriKind.Relative),
+                    //};
+
+                    images = images.OrderBy(emp => Guid.NewGuid());
+                    var tileData = new FlipTileData
+                                       {
+                                           Title = "DeviantArt browser",
+                                           BackContent = "dA",
+                                           BackgroundImage = new Uri("da173x173.png", UriKind.Relative),
+                                           WideBackContent = "dA",
+                                           WideBackgroundImage = new Uri("da346x173.png", UriKind.Relative),
+                                           BackBackgroundImage = images.First(),
+                                           WideBackBackgroundImage = images.First()
+                                       };
+
+                    //Debug.WriteLine("Activating live tile: " + Mangopollo.Utils.CanUseLiveTiles);
+                    tileId.Update(tileData);
+                }
             }
         }
 
