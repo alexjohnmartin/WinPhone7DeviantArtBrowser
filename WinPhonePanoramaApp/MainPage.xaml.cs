@@ -8,7 +8,9 @@ using Mangopollo;
 using Mangopollo.Tiles;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using RateMyApp.Resources;
+using RateMyApp.Helpers;
 
 namespace WinPhonePanoramaApp
 {
@@ -28,6 +30,21 @@ namespace WinPhonePanoramaApp
             //BuildApplicationBar();
 
             //FeedbackOverlay.VisibilityChanged += FeedbackOverlay_VisibilityChanged;
+        }
+
+        public void TwitterButton_Click(object sender, EventArgs e)
+        {
+            var task = new Microsoft.Phone.Tasks.WebBrowserTask();
+            task.Uri = new Uri("");
+            task.Show(); 
+        }
+
+        public void ReviewButton_Click(object sender, EventArgs e)
+        {
+            FeedbackHelper.Default.Reviewed();
+
+            var marketplace = new MarketplaceReviewTask();
+            marketplace.Show();
         }
 
         private void SetTileData()

@@ -109,6 +109,8 @@
     <Resource Include="GreenShadesBackground.png" />
     <Resource Include="HoneycombBackground.png" />
     <Content Include="da346x173.png" />
+    <Resource Include="Image\appbar.chat.png" />
+    <Resource Include="Image\appbar.message.smiley.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

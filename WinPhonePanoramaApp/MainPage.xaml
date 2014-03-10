@@ -101,10 +101,42 @@
             <!--About-->
             <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
             <controls:PanoramaItem Header="about">
-                <StackPanel Width="411">
+                <!--<StackPanel Width="411">
                     <TextBlock Text="Twitter: @alexjohnmartin" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="10,0,0,30"/>
                     <TextBlock Text="LinkedIn: www.linkedin.com/profile/view?id=13083750" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="10,0,0,30"/>
-                </StackPanel>
+                </StackPanel>-->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200" />
+                        <RowDefinition Height="200" />
+                        <RowDefinition Height="200" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Name="TwitterButton" Click="TwitterButton_Click" Background="Red" BorderThickness="0" Grid.Column="0" Grid.Row="0">
+                        <StackPanel>
+                            <Image Source="Image/appbar.chat.png" MaxHeight="120" />
+                            <TextBlock Text="Twitter" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Name="ReviewButton" Click="ReviewButton_Click" Background="OrangeRed" BorderThickness="0" Grid.Column="1" Grid.Row="0">
+                        <StackPanel>
+                            <Image Source="Image/appbar.message.smiley.png" MaxHeight="120" />
+                            <TextBlock Text="Review" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--<Button Name="CreditsButton" Click="CreditsButton_Click" Background="CadetBlue" BorderThickness="0" Grid.Column="1" Grid.Row="1">
+                        <StackPanel>
+                            <Image Source="Image/appbar.martini.png" MaxHeight="120" />
+                            <TextBlock Text="Credits" />
+                        </StackPanel>
+                    </Button>-->
+                </Grid>
             </controls:PanoramaItem>
         </controls:Panorama>
 
