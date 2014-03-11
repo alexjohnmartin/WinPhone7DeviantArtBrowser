@@ -34,8 +34,10 @@ namespace WinPhonePanoramaApp
 
         public void TwitterButton_Click(object sender, EventArgs e)
         {
-            var task = new Microsoft.Phone.Tasks.WebBrowserTask();
-            task.Uri = new Uri("");
+            var task = new WebBrowserTask
+                           {
+                               Uri = new Uri("https://twitter.com/AlexJohnMartin", UriKind.Absolute)
+                           };
             task.Show(); 
         }
 
